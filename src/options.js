@@ -13,16 +13,34 @@ document.addEventListener('DOMContentLoaded', function() {
         optionInput.id = `urlShortcut${i}`;
         optionInput.className = 'optionInput';
 
+        const openInNewTabInput = document.createElement('input');
+        openInNewTabInput.type = 'checkbox';
+        openInNewTabInput.id = `openInNewTabShortcut${i}`;
+        openInNewTabInput.checked = true;
+
+        const openInNewTabLabel = document.createElement('label');
+        openInNewTabLabel.htmlFor = openInNewTabInput.id;
+        openInNewTabLabel.className = 'openInNewTabLabel';
+        openInNewTabLabel.appendChild(openInNewTabInput);
+        openInNewTabLabel.appendChild(document.createTextNode('Open in new tab'));
+
         const optionRow = document.createElement('div');
         optionRow.className = 'optionRow';
         optionRow.appendChild(optionTitle);
         optionRow.appendChild(optionInput);
+        optionRow.appendChild(openInNewTabLabel);
         optionsContainer.appendChild(optionRow);
 
         // Save value on change
         optionInput.addEventListener('input', function() {
             const updatedOptionValue = {};
             updatedOptionValue[`urlShortcut${i}`] = optionInput.value;
+            chrome.storage.sync.set(updatedOptionValue, function() { });
+        });
+
+        openInNewTabInput.addEventListener('change', function() {
+            const updatedOptionValue = {};
+            updatedOptionValue[`openInNewTabShortcut${i}`] = openInNewTabInput.checked;
             chrome.storage.sync.set(updatedOptionValue, function() { });
         });
     }
@@ -34,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (previousValues[`urlShortcut${i}`]) {
                 optionInput.value = previousValues[`urlShortcut${i}`];
             }
+            const openInNewTabInput = document.getElementById(`openInNewTabShortcut${i}`);
+            openInNewTabInput.checked = previousValues[`openInNewTabShortcut${i}`] !== false;
         }
     });
 });

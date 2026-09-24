@@ -49,3 +49,11 @@ input[type="text"] {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.openInNewTabLabel {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 12px;
+    white-space: nowrap;
+}

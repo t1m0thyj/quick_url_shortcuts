@@ -79,11 +79,18 @@ chrome.commands.onCommand.addListener(function(command) {
 });
 
 function openUrl(key) {
-    chrome.storage.sync.get(key, function(result) {
+    const shortcutNumber = key.replace('urlShortcut', '');
+    const openInNewTabKey = `openInNewTabShortcut${shortcutNumber}`;
+
+    chrome.storage.sync.get([key, openInNewTabKey], function(result) {
         const urlString = result[key];
         try {
             const url = new URL(urlString);
-            chrome.tabs.create({ url: url.href });
+            if (result[openInNewTabKey] !== false) {
+                chrome.tabs.create({ url: url.href });
+            } else {
+                chrome.tabs.update({ url: url.href });
+            }
         } catch (error) {
             console.warn('Quick URL Shortcuts tried opening an invalid URL:', error);
         }
