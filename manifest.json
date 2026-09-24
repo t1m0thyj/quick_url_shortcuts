@@ -7,13 +7,13 @@
     "version": "1.0",
     "manifest_version": 3,
     "description": "Assign keyboard shortcuts for your favourite sites",
-    "icons": { "128": "icon_128.png" },
+    "icons": { "128": "res/icon_128.png" },
     "background": {
-        "service_worker": "serviceWorker.js",
+        "service_worker": "src/serviceWorker.js",
         "type": "module"
     },
     "options_ui": {
-        "page": "options.html",
+        "page": "src/options.html",
         "open_in_tab": true
     },
     "commands": {
